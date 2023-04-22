@@ -4,7 +4,7 @@ This is a Chrome and Edge extension to download the ChatGPT Q&A page into a mark
 
 ## 1. Installation
 
-This extension is not on the Chrome Web Store yet. To install it manually into your Chrome or Edge browser, clone this repository to your hard drive, and then follow these instructions:
+This extension is not on the Chrome Web Store yet. To install it manually into your Chrome or Edge browser, clone this repository ([how?](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)) to your hard drive, and then follow these instructions:
 
 - [Chrome](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked)
 - [Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading)
