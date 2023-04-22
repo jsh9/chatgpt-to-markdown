@@ -5,7 +5,12 @@
     "description": "A Chrome extension to save ChatGPT Q&A page as markdown",
     "permissions": ["activeTab", "downloads"],
     "browser_action": {
-        "default_icon": "./icon_drawing_script/chatgpt_icon_v4.png"
+        "default_icon": "./icon_drawing_scripts/chatgpt_icon_v4.png"
+    },
+    "icons": {
+        "16": "./icon_drawing_scripts/chatgpt_icon_v4.png",
+        "48": "./icon_drawing_scripts/chatgpt_icon_v4.png",
+        "128": "./icon_drawing_scripts/chatgpt_icon_v4.png"
     },
     "background": {
         "scripts": ["background.js"],
