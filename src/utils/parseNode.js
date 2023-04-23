@@ -29,7 +29,7 @@ function parseNode(node, level) {
       if (childNode.nodeType === Node.ELEMENT_NODE) {
         const tag = childNode.tagName;
 
-        if (tag === "P" || tag === "LI") {
+        if (["P", "LI", "STRONG", "EM"].includes(tag)) {
           nodeMarkdown += parseParagraph(childNode);
         }
         if (tag === "OL") {
@@ -46,7 +46,9 @@ function parseNode(node, level) {
         }
         if (tag === "CODE") {
           nodeMarkdown += parseInlineCode(childNode);
-        } else {
+        }
+
+        if (!["CODE", "STRONG", "EM"].includes(tag)) {
           nodeMarkdown += "\n";
         }
       }
@@ -58,23 +60,28 @@ function parseNode(node, level) {
 
 
 function parseParagraph(node) {
-  return replaceString(node.outerHTML) + "\n";
+  return replaceString(node.outerHTML);
 }
 
 
 function parseOrderedList(node, level) {
   var orderedListMarkdown = "\n";
   const spaces = getSpaces(level);
-  node.childNodes.forEach((listItemNode, index) => {
+  const childNodes = node.childNodes;
+
+  for (var i = 0; i < childNodes.length; i++) {
+    const listItemNode = childNodes[i];
+
     if (
       listItemNode.nodeType === Node.ELEMENT_NODE &&
       listItemNode.tagName === "LI"
     ) {
-      orderedListMarkdown += `${spaces}${index + node.start}. ${
+      orderedListMarkdown += `${spaces}${i + node.start}. ${
         parseNode(listItemNode, level + 1)
       }\n`;
     }
-  });
+  }
+
   return orderedListMarkdown + "\n";
 }
 
@@ -82,7 +89,11 @@ function parseOrderedList(node, level) {
 function parseUnorderedList(node, level) {
   var unorderedListMarkdown = "\n";
   const spaces = getSpaces(level);
-  node.childNodes.forEach((listItemNode, index) => {
+  const childNodes = node.childNodes;
+
+  for (var i = 0; i < childNodes.length; i++) {
+    const listItemNode = childNodes[i];
+
     if (
       listItemNode.nodeType === Node.ELEMENT_NODE &&
       listItemNode.tagName === "LI"
@@ -91,7 +102,8 @@ function parseUnorderedList(node, level) {
         parseNode(listItemNode, level + 1)
       }\n`;
     }
-  });
+  }
+
   return unorderedListMarkdown + "\n";
 }
 
@@ -111,7 +123,7 @@ function parseInlineCode(node) {
 
 
 function parseTable(node) {
-  let tableMarkdown = "";
+  let tableMarkdown = "\n";
   node.childNodes.forEach((tableSectionNode) => {
     if (
       tableSectionNode.nodeType === Node.ELEMENT_NODE &&
