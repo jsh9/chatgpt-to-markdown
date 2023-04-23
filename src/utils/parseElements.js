@@ -4,6 +4,7 @@ const getHorizontalRules = require("./getHorizontalRules");
 
 function parseElements(elements) {
   var markdown = "";
+  const level = 0;
 
   for (var i = 0; i < elements.length; i++) {
     const ele = elements[i];
@@ -12,7 +13,7 @@ function parseElements(elements) {
     if (!firstChild) {
       continue;
     }
-    markdown += parseNode(firstChild);
+    markdown += parseNode(firstChild, level);
   }
 
   markdown = markdown.substring(getHorizontalRules().length);

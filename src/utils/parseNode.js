@@ -2,7 +2,7 @@ const replaceString = require("./replaceString");
 const getHorizontalRules = require("./getHorizontalRules");
 
 
-function parseNode(node) {
+function parseNode(node, level) {
   var nodeMarkdown = "";
 
   if (node.nodeType === Node.TEXT_NODE) {
@@ -33,10 +33,10 @@ function parseNode(node) {
           nodeMarkdown += parseParagraph(childNode);
         }
         if (tag === "OL") {
-          nodeMarkdown += parseOrderedList(childNode);
+          nodeMarkdown += parseOrderedList(childNode, level);
         }
         if (tag === "UL") {
-          nodeMarkdown += parseUnorderedList(childNode);
+          nodeMarkdown += parseUnorderedList(childNode, level);
         }
         if (tag === "PRE") {
           nodeMarkdown += parseCodeBlock(childNode);
@@ -62,15 +62,16 @@ function parseParagraph(node) {
 }
 
 
-function parseOrderedList(node) {
-  var orderedListMarkdown = "";
+function parseOrderedList(node, level) {
+  var orderedListMarkdown = "\n";
+  const spaces = getSpaces(level);
   node.childNodes.forEach((listItemNode, index) => {
     if (
       listItemNode.nodeType === Node.ELEMENT_NODE &&
       listItemNode.tagName === "LI"
     ) {
-      orderedListMarkdown += `${index + node.start}. ${
-        parseNode(listItemNode)
+      orderedListMarkdown += `${spaces}${index + node.start}. ${
+        parseNode(listItemNode, level + 1)
       }\n`;
     }
   });
@@ -78,14 +79,17 @@ function parseOrderedList(node) {
 }
 
 
-function parseUnorderedList(node) {
-  var unorderedListMarkdown = "";
+function parseUnorderedList(node, level) {
+  var unorderedListMarkdown = "\n";
+  const spaces = getSpaces(level);
   node.childNodes.forEach((listItemNode, index) => {
     if (
       listItemNode.nodeType === Node.ELEMENT_NODE &&
       listItemNode.tagName === "LI"
     ) {
-      unorderedListMarkdown += `- ${replaceString(listItemNode.outerHTML)}\n`;
+      unorderedListMarkdown += `${spaces}- ${
+        parseNode(listItemNode, level + 1)
+      }\n`;
     }
   });
   return unorderedListMarkdown + "\n";
@@ -160,6 +164,15 @@ function parseTable(node) {
   });
 
   return tableMarkdown;
+}
+
+
+function getSpaces(level) {
+  // Multiply the level by 4 to get the number of spaces
+  const numSpaces = level * 4;
+
+  // Create a new string with the specified number of spaces
+  return " ".repeat(numSpaces);
 }
 
 
