@@ -3,10 +3,22 @@ function isValidUrl(url) {
   return pattern.test(url);
 }
 
-chrome.browserAction.onClicked.addListener(function (tab) {
+
+function showAlert() {
+  alert('This extension only works on https://chat.openai.com/*');
+}
+
+
+chrome.action.onClicked.addListener(function (tab) {
   if (isValidUrl(tab.url)) {
-    chrome.tabs.executeScript(tab.id, { file: "./dist/minimizedChatGptToMarkdown.js" });
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["./dist/minimizedChatGptToMarkdown.js"],
+    });
   } else {
-    alert('This extension only works on https://chat.openai.com/*');
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      function: showAlert,
+    });
   }
 });
