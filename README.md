@@ -28,7 +28,9 @@ A markdown file will automatically be saved to your `Downloads` folder.
 
 You can clone this repository, make small tweaks to it (if you code Javascript) as you'd like.
 
-To lock the dependencies, run:
+### 3.1. Building the project
+
+To install and lock the dependencies, run:
 
 ```bash
 npm install
@@ -38,6 +40,14 @@ To build the code, run:
 
 ```bash
 npm run build
+```
+
+### 3.2. Testing
+
+To run unit tests, first install dependencies, and then:
+
+```bash
+npx jest
 ```
 
 ## 4. Acknowledgement
