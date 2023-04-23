@@ -1,5 +1,5 @@
 const parseNode = require("./parseNode");
-const getHorizontalRules = require("./getHorizontalRules");
+const cleanUpString   = require("./cleanUpString");
 
 
 function parseElements(elements) {
@@ -16,9 +16,7 @@ function parseElements(elements) {
     markdown += parseNode(firstChild, level);
   }
 
-  markdown = markdown.substring(getHorizontalRules().length);
-
-  return markdown;
+  return cleanUpString(markdown);
 }
 
 
