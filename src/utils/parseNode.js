@@ -29,7 +29,7 @@ function parseNode(node, level) {
       if (childNode.nodeType === Node.ELEMENT_NODE) {
         const tag = childNode.tagName;
 
-        if (["P", "LI", "STRONG", "EM"].includes(tag)) {
+        if (["P", "LI", "STRONG", "EM", "DEL"].includes(tag)) {
           nodeMarkdown += parseParagraph(childNode);
         }
         if (tag === "OL") {
@@ -48,7 +48,7 @@ function parseNode(node, level) {
           nodeMarkdown += parseInlineCode(childNode);
         }
 
-        if (!["CODE", "STRONG", "EM"].includes(tag)) {
+        if (!["CODE", "STRONG", "EM", "DEL"].includes(tag)) {
           nodeMarkdown += "\n";
         }
       }

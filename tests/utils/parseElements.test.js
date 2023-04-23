@@ -12,8 +12,11 @@ global.Node = {
 
 
 test.each([
-  ['nested_lists.html', 'nested_lists_expected.md'],
-  ['table_case_1.html', 'table_case_1_expected.md'],
+  ['nested_lists.html', 'nested_lists.md'],
+  ['bulleted_list.html', 'bulleted_list.md'],
+  ['table_and_list.html', 'table_and_list.md'],
+  ['different_text_styles.html', 'different_text_styles.md'],
+  ['table_with_complex_cells.html', 'table_with_complex_cells.md'],
 ])('%s => %s', (htmlFileName, mdFileName) => {
   const inputHtml = fs.readFileSync(testCaseDir + htmlFileName, encoding);
   const dom = new JSDOM(inputHtml);

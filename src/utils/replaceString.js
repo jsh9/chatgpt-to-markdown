@@ -4,6 +4,7 @@ module.exports = function (input) {
     var replaced = input_.replace(/<p>|<\/p>|<li>|<\/li>|<th>|<\/th>|<td>|<\/td>/gi, "")
         .replace(/<strong>|<\/strong>/gi, "**")
         .replace(/<em>|<\/em>/gi, "_")
+        .replace(/<del>|<\/del>/gi, "~~")
         .replace(/<code>|<\/code>/gi, "`");
 
     return extractPlainTextFromHtml(replaced);
