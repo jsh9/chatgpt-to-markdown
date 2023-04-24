@@ -1,4 +1,4 @@
-const consoleSave = require("./utils/consoleSave");
+const consoleSave = require('./utils/consoleSave');
 const parseElements = require('./utils/parseElements');
 
 (function chatGptToMarkdown() {
