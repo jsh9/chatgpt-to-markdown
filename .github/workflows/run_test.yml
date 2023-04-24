@@ -10,10 +10,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Build and test
+        uses: actions/checkout@v3
+        uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: |
+        run: |
           npm install
           npm test
+
+      - name: Run git diff
+        run: git diff --exit-code
+
+      - name: Fail pipeline on non-zero exit code
+        if: ${{ failure() }}
+        run: echo "Git diff produced non-zero exit code, failing pipeline."
