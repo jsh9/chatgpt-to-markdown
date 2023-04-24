@@ -79,7 +79,7 @@ function parseNode(node, level) {
     } else {
       throw new Error(
         `Edge case encountered: node.tagName: ${node.tagName}\n` +
-          'Please contact the author.'
+          'Please contact the author.',
       );
     }
   }
@@ -129,7 +129,7 @@ function parseOrderedList(node, level) {
     ) {
       orderedListMarkdown += `${spaces}${i + node.start}. ${parseNode(
         listItemNode,
-        level + 1
+        level + 1,
       )}\n`;
     }
   }
@@ -151,7 +151,7 @@ function parseUnorderedList(node, level) {
     ) {
       unorderedListMarkdown += `${spaces}- ${parseNode(
         listItemNode,
-        level + 1
+        level + 1,
       )}\n`;
     }
   }

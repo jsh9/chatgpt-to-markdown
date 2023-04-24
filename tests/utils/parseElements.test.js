@@ -10,7 +10,6 @@ global.Node = {
   TEXT_NODE: 3,
 };
 
-
 test.each([
   ['plain_paragraphs.html', 'plain_paragraphs.md'],
   ['block_quotes_0.html', 'block_quotes_0.md'],

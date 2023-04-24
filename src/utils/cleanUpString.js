@@ -3,8 +3,8 @@ const getHorizontalRules = require('./getHorizontalRules');
 function cleanUpString(inputString) {
   return trimEachLine(
     trimAndAddTrailingNewline(
-      consolidateEmptyLines(removeLeadingHorizontalRule(inputString))
-    )
+      consolidateEmptyLines(removeLeadingHorizontalRule(inputString)),
+    ),
   );
 }
 

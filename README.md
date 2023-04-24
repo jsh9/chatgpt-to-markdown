@@ -55,7 +55,7 @@ npx jest
 Run this command in the terminal:
 
 ```bash
-npx prettier --write "src/**/*.js"
+npm run auto-format
 ```
 
 And then check the file diffs.

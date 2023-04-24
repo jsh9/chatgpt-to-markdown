@@ -1,5 +1,4 @@
-const blockQuoteUtils = require("../../src/utils/blockQuoteUtils");
-
+const blockQuoteUtils = require('../../src/utils/blockQuoteUtils');
 
 test.each([
   ['\n> \n> \n> \n> ', '\n> \n> '],
