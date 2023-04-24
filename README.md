@@ -24,7 +24,7 @@ Then click on the icon of this extension, or use the following keyboard shortcut
 
 A markdown file will automatically be saved to your `Downloads` folder.
 
-## 3. Local debugging and testing
+## 3. Local debugging and testing (for developers)
 
 You can clone this repository, make small tweaks to it (if you code Javascript) as you'd like.
 
@@ -54,8 +54,11 @@ npx jest
 
 Every pull request will trigger a CI/CD pipeline run, the steps of which are defined in [`./github/workflows/pipeline.yml`](./github/workflows/pipeline.yml).
 
-To pass the pipeline,
-
+The pipeline automatically checks for the following:
+- The package version (in `package.json`) is consistent with the locked-down version (in `package-lock.json`)
+- Versions in `manifest.json` and `package.json` are consistent
+- The unit tests can all pass
+- The minified script in `dist` is up to date with the code in `src`
 
 ## 4. Acknowledgement
 
