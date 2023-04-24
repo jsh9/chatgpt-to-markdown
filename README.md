@@ -24,11 +24,13 @@ Then click on the icon of this extension, or use the following keyboard shortcut
 
 A markdown file will automatically be saved to your `Downloads` folder.
 
-## 3. Local debugging and testing
+## 3. Local debugging and testing (for developers)
 
 You can clone this repository, make small tweaks to it (if you code Javascript) as you'd like.
 
-To lock the dependencies, run:
+### 3.1. Building the project
+
+To install and lock the dependencies, run:
 
 ```bash
 npm install
@@ -39,6 +41,35 @@ To build the code, run:
 ```bash
 npm run build
 ```
+
+### 3.2. Testing
+
+To run unit tests, first install dependencies, and then:
+
+```bash
+npx jest
+```
+
+### 3.3 Auto-format code
+
+Run this command in the terminal:
+
+```bash
+npm run auto-format
+```
+
+And then check the file diffs.
+
+### 3.4. CI/CD
+
+Every pull request will trigger a CI/CD pipeline run, the steps of which are defined in [`./github/workflows/pipeline.yml`](./github/workflows/pipeline.yml).
+
+The pipeline automatically checks for the following:
+- The package version (in `package.json`) is consistent with the locked-down version (in `package-lock.json`)
+- Versions in `manifest.json` and `package.json` are consistent
+- The unit tests can all pass
+- The minified script in `dist` is up to date with the code in `src`
+- The code sytles are correct (running [Prettier](https://prettier.io/) does not product any file diff)
 
 ## 4. Acknowledgement
 

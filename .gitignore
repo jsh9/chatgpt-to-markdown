@@ -130,3 +130,6 @@ out
 
 # git
 .git
+
+# macOS
+.DS_store
