@@ -7,7 +7,7 @@ test.each([
   ['\n> \n> ', '\n> \n> '],
   ['\n> ', '\n> '],
   ['', ''],
-  ['something', 'something'],
+  ['something', 'something2'],
   ['\n> hello\n> world', '\n> hello\n> world'],
   ['\n> hello\n> \n> world', '\n> hello\n> \n> world'],
   ['\n> hello\n> \n> \n> \n> world', '\n> hello\n> \n> world'],
