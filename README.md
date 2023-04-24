@@ -50,7 +50,17 @@ To run unit tests, first install dependencies, and then:
 npx jest
 ```
 
-### 3.3. CI/CD
+### 3.3 Auto-format code
+
+Run this command in the terminal:
+
+```bash
+npx prettier --write "src/**/*.js"
+```
+
+And then check the file diffs.
+
+### 3.4. CI/CD
 
 Every pull request will trigger a CI/CD pipeline run, the steps of which are defined in [`./github/workflows/pipeline.yml`](./github/workflows/pipeline.yml).
 
@@ -59,6 +69,7 @@ The pipeline automatically checks for the following:
 - Versions in `manifest.json` and `package.json` are consistent
 - The unit tests can all pass
 - The minified script in `dist` is up to date with the code in `src`
+- The code sytles are correct (running [Prettier](https://prettier.io/) does not product any file diff)
 
 ## 4. Acknowledgement
 
