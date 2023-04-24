@@ -50,6 +50,13 @@ To run unit tests, first install dependencies, and then:
 npx jest
 ```
 
+### 3.3. CI/CD
+
+Every pull request will trigger a CI/CD pipeline run, the steps of which are defined in [`./github/workflows/pipeline.yml`](./github/workflows/pipeline.yml).
+
+To pass the pipeline,
+
+
 ## 4. Acknowledgement
 
 - The core code is adapted from code files in https://github.com/ryanschiang/chatgpt-export

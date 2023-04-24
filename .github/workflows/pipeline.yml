@@ -28,3 +28,7 @@ jobs:
       - name: Fail pipeline on non-zero exit code
         if: ${{ failure() }}
         run: echo "Git diff produced non-zero exit code, failing pipeline."
+
+      - name: Check manifest.json and package.json have consistent versions
+        run: bash ./.github/workflows/check_package_and_manifest_versions.sh
+
