@@ -10,9 +10,9 @@ version2=$(jq -r '.version' "$file2")
 
 # Compare the version fields and return the appropriate exit code
 if [[ "$version1" == "$version2" ]]; then
-  echo "0"
+  echo "Versions are the same"
   exit 0  # Versions are the same, return 0
 else
-  echo "1"
+  echo "Versions are different: $version1 vs $version2"
   exit 1  # Versions are different, return 1
 fi
