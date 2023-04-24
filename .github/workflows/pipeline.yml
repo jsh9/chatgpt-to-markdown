@@ -36,7 +36,3 @@ jobs:
         run: |
           npx prettier --write "src/**/*.js"
           git diff --exit-code
-
-      - name: Fail pipeline if auto-formatting results in git diff
-        if: ${{ failure() }}
-        run: echo "Git diff produced non-zero exit code, failing pipeline."
