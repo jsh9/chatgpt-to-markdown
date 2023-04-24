@@ -12,6 +12,7 @@ global.Node = {
 
 
 test.each([
+  ['plain_paragraphs.html', 'plain_paragraphs.md'],
   ['block_quotes_0.html', 'block_quotes_0.md'],
   ['block_quotes_1.html', 'block_quotes_1.md'],
   ['block_quotes_2.html', 'block_quotes_2.md'],
