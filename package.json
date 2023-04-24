@@ -3,7 +3,8 @@
     "version": "0.0.3",
     "description": "Save ChatGPT Q&A page as markdown",
     "scripts": {
-        "build": "npx webpack --mode production"
+        "build": "npx webpack --mode production",
+        "test": "npx jest"
     },
     "author": "https://github.com/jsh9",
     "license": "MIT",
