@@ -19,6 +19,9 @@ jobs:
       - name: Run unit tests
         run: npm test
 
+      - name: Build project
+        run: npm run build
+
       - name: Run git diff
         run: git diff --exit-code
 
