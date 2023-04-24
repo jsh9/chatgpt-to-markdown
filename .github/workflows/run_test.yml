@@ -14,9 +14,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: |
-          npm install
-          npm test
+      - run: npm install
+
+      - name: Run unit tests
+        run: npm test
 
       - name: Run git diff
         run: git diff --exit-code
