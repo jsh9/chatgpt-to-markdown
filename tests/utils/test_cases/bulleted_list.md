@@ -23,20 +23,21 @@ def my_function():
 ```
 
 Some text between the code blocks.
+
 ```scss
 my_function()
 ```
 
 - The fourth bullet point has three levels of nested bullets:
 
-    - First level bullet point
-        1. Second level ordered bullet point
-        2. Second level ordered bullet point
+   - First level bullet point
+      1. Second level ordered bullet point
+      2. Second level ordered bullet point
 
-    - First level bullet point
-        - Second level bullet point
-            - Third level bullet point
-            - Third level bullet point
+   - First level bullet point
+      - Second level bullet point
+         - Third level bullet point
+         - Third level bullet point
 
 ----------
 

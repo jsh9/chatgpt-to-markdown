@@ -1,5 +1,6 @@
 const replaceString = require("./replaceString");
 const getHorizontalRules = require("./getHorizontalRules");
+const blockQuoteUtils = require("./blockQuoteUtils");
 
 
 function parseNode(node, level) {
@@ -19,48 +20,87 @@ function parseNode(node, level) {
       nodeMarkdown += `## Answer\n\n`;
     }
 
-    for (var j = 0; j < childNodes.length; j++) {
-      const childNode = childNodes[j];
+    if (node.tagName === "OL") {
+      nodeMarkdown += parseOrderedList(node, level);
+    } else if (node.tagName === "UL") {
+      nodeMarkdown += parseUnorderedList(node, level);
+    } else if (["P", "LI", "DIV"].includes(node.tagName)) {
+      for (var j = 0; j < childNodes.length; j++) {
+        const childNode = childNodes[j];
 
-      if (childNode.nodeType == Node.TEXT_NODE) {
-        nodeMarkdown += childNode.textContent;
+        if (childNode.nodeType == Node.TEXT_NODE) {
+          nodeMarkdown += childNode.textContent;
+        }
+
+        if (childNode.nodeType === Node.ELEMENT_NODE) {
+          const tag = childNode.tagName;
+
+          if (["P", "LI", "STRONG", "EM", "DEL"].includes(tag)) {
+            nodeMarkdown += parseParagraph(childNode);
+          }
+          if (tag === "BLOCKQUOTE") {
+            nodeMarkdown += parseBlockQuote(childNode, level);
+          }
+          if (tag === "OL") {
+            nodeMarkdown += parseOrderedList(childNode, level);
+          }
+          if (tag === "UL") {
+            nodeMarkdown += parseUnorderedList(childNode, level);
+          }
+          if (tag === "PRE") {
+            nodeMarkdown += parseCodeBlock(childNode);
+          }
+          if (tag === "TABLE") {
+            nodeMarkdown += parseTable(childNode);
+          }
+          if (tag === "CODE") {
+            nodeMarkdown += parseInlineCode(childNode);
+          }
+
+          if (!["CODE", "STRONG", "EM", "DEL"].includes(tag)) {
+            nodeMarkdown += "\n\n";
+          }
+        }
       }
-
-      if (childNode.nodeType === Node.ELEMENT_NODE) {
-        const tag = childNode.tagName;
-
-        if (["P", "LI", "STRONG", "EM", "DEL"].includes(tag)) {
-          nodeMarkdown += parseParagraph(childNode);
-        }
-        if (tag === "OL") {
-          nodeMarkdown += parseOrderedList(childNode, level);
-        }
-        if (tag === "UL") {
-          nodeMarkdown += parseUnorderedList(childNode, level);
-        }
-        if (tag === "PRE") {
-          nodeMarkdown += parseCodeBlock(childNode);
-        }
-        if (tag === "TABLE") {
-          nodeMarkdown += parseTable(childNode);
-        }
-        if (tag === "CODE") {
-          nodeMarkdown += parseInlineCode(childNode);
-        }
-
-        if (!["CODE", "STRONG", "EM", "DEL"].includes(tag)) {
-          nodeMarkdown += "\n";
-        }
-      }
+    } else {
+      throw new Error(
+        `Edge case encountered: node.tagName: ${node.tagName}\n`
+        + "Please contact the author."
+      );
     }
   }
-
   return nodeMarkdown;
 }
 
 
 function parseParagraph(node) {
   return replaceString(node.outerHTML);
+}
+
+
+function parseBlockQuote(node, level) {
+  var blockQuoteMarkdown = "\n";
+  const spaces = getSpaces(level);
+  const quoteHead = blockQuoteUtils.makeQuoteHead(spaces);
+  const childNodes = node.childNodes;
+
+  for (var i = 0; i < childNodes.length; i++) {
+    const blockQuoteNode = childNodes[i];
+    if (blockQuoteNode.tagName === "BLOCKQUOTE") {
+      blockQuoteMarkdown += parseBlockQuote(blockQuoteNode, level);
+    } else {
+      blockQuoteMarkdown += ("\n" + parseNode(blockQuoteNode, level + 1) + "\n");
+    }
+  }
+
+  const withQuoteHead = quoteHead
+    + blockQuoteUtils.trimAndAddPaddingNewlines(blockQuoteMarkdown).replace(
+      /\n/g,
+      quoteHead,
+    );
+  const qhReplaced = blockQuoteUtils.replaceQuoteHeadFromEnd(withQuoteHead);
+  const qhRemoved = blockQuoteUtils.removeRedundantQuoteHeads(qhReplaced);
+  return qhRemoved;
 }
 
 
@@ -180,8 +220,16 @@ function parseTable(node) {
 
 
 function getSpaces(level) {
-  // Multiply the level by 4 to get the number of spaces
-  const numSpaces = level * 4;
+  if (level === undefined) {
+    throw new Error("Please pass in `level` to `getSpaces()`");
+  }
+
+  // Multiply the level by 3 to get the number of spaces
+  // We use 3 instead of 2 or 4 here, because:
+  //    * 2 only sufficient for adding a level for unordered list
+  //      (for ordered list, we need at least 3)
+  //    # 4 is too much because it sometimes creates a quoted code block
+  const numSpaces = level * 3;
 
   // Create a new string with the specified number of spaces
   return " ".repeat(numSpaces);

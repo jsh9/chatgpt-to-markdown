@@ -12,6 +12,13 @@ global.Node = {
 
 
 test.each([
+  ['block_quotes_0.html', 'block_quotes_0.md'],
+  ['block_quotes_1.html', 'block_quotes_1.md'],
+  ['block_quotes_2.html', 'block_quotes_2.md'],
+  ['block_quotes_3.html', 'block_quotes_3.md'],
+  ['block_quotes_4.html', 'block_quotes_4.md'],
+  ['block_quotes_5.html', 'block_quotes_5.md'],
+  ['block_quotes_6.html', 'block_quotes_6.md'],
   ['nested_lists.html', 'nested_lists.md'],
   ['bulleted_list.html', 'bulleted_list.md'],
   ['table_and_list.html', 'table_and_list.md'],

@@ -2,12 +2,14 @@ const getHorizontalRules = require("./getHorizontalRules");
 
 
 function cleanUpString(inputString) {
-  return trimAndAddTrailingNewline(
-    consolidateEmptyLines(
-      removeLeadingHorizontalRule(
-        inputString,
+  return trimEachLine(
+    trimAndAddTrailingNewline(
+      consolidateEmptyLines(
+        removeLeadingHorizontalRule(
+          inputString,
+        ),
       ),
-    ),
+    )
   );
 }
 
@@ -24,6 +26,14 @@ function consolidateEmptyLines(inputString) {
 
 function trimAndAddTrailingNewline(inputString) {
   return inputString.trim() + "\n";
+}
+
+
+function trimEachLine(str) {
+  let lines = str.split("\n");
+  let trimmedLines = lines.map(line => line.trimRight());
+  let trimmedStr = trimmedLines.join("\n");
+  return trimmedStr;
 }
 
 
