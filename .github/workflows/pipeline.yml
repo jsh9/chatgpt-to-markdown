@@ -14,20 +14,17 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm install
+      - run: |
+          npm install
+          git diff --exit-code
 
       - name: Run unit tests
         run: npm test
 
       - name: Build project
-        run: npm run build
-
-      - name: Run git diff
-        run: git diff --exit-code
-
-      - name: Fail pipeline on non-zero exit code
-        if: ${{ failure() }}
-        run: echo "Git diff produced non-zero exit code, failing pipeline."
+        run: |
+          npm run build
+          git diff --exit-code
 
       - name: Check manifest.json and package.json have consistent versions
         run: bash ./.github/workflows/check_package_and_manifest_versions.sh
