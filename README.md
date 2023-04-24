@@ -62,7 +62,7 @@ And then check the file diffs.
 
 ### 3.4. CI/CD
 
-Every pull request will trigger a CI/CD pipeline run, the steps of which are defined in [`./github/workflows/pipeline.yml`](./github/workflows/pipeline.yml).
+Every pull request will trigger a CI/CD pipeline run, the steps of which are defined in [`./.github/workflows/pipeline.yml`](./github/workflows/pipeline.yml).
 
 The pipeline automatically checks for the following:
 - The package version (in `package.json`) is consistent with the locked-down version (in `package-lock.json`)
