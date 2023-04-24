@@ -1,9 +1,8 @@
-const parseNode = require("./parseNode");
-const cleanUpString   = require("./cleanUpString");
-
+const parseNode = require('./parseNode');
+const cleanUpString = require('./cleanUpString');
 
 function parseElements(elements) {
-  var markdown = "";
+  var markdown = '';
   const level = 0;
 
   for (var i = 0; i < elements.length; i++) {
@@ -18,6 +17,5 @@ function parseElements(elements) {
 
   return cleanUpString(markdown);
 }
-
 
 module.exports = parseElements;

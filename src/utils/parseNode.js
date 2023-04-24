@@ -13,33 +13,32 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 */
 
-const replaceString = require("./replaceString");
-const getHorizontalRules = require("./getHorizontalRules");
-const blockQuoteUtils = require("./blockQuoteUtils");
-
+const replaceString = require('./replaceString');
+const getHorizontalRules = require('./getHorizontalRules');
+const blockQuoteUtils = require('./blockQuoteUtils');
 
 function parseNode(node, level) {
-  var nodeMarkdown = "";
+  var nodeMarkdown = '';
 
   if (node.nodeType === Node.TEXT_NODE) {
     nodeMarkdown += getHorizontalRules();
     nodeMarkdown += `## Question\n\n`;
     nodeMarkdown += node.textContent;
-    nodeMarkdown += "\n\n";
+    nodeMarkdown += '\n\n';
   }
 
   if (node.nodeType === Node.ELEMENT_NODE) {
     const childNodes = node.childNodes;
 
-    if (node.className.includes("markdown prose")) {
+    if (node.className.includes('markdown prose')) {
       nodeMarkdown += `## Answer\n\n`;
     }
 
-    if (node.tagName === "OL") {
+    if (node.tagName === 'OL') {
       nodeMarkdown += parseOrderedList(node, level);
-    } else if (node.tagName === "UL") {
+    } else if (node.tagName === 'UL') {
       nodeMarkdown += parseUnorderedList(node, level);
-    } else if (["P", "LI", "DIV"].includes(node.tagName)) {
+    } else if (['P', 'LI', 'DIV'].includes(node.tagName)) {
       for (var j = 0; j < childNodes.length; j++) {
         const childNode = childNodes[j];
 
@@ -50,77 +49,74 @@ function parseNode(node, level) {
         if (childNode.nodeType === Node.ELEMENT_NODE) {
           const tag = childNode.tagName;
 
-          if (["P", "LI", "STRONG", "EM", "DEL"].includes(tag)) {
+          if (['P', 'LI', 'STRONG', 'EM', 'DEL'].includes(tag)) {
             nodeMarkdown += parseParagraph(childNode);
           }
-          if (tag === "BLOCKQUOTE") {
+          if (tag === 'BLOCKQUOTE') {
             nodeMarkdown += parseBlockQuote(childNode, level);
           }
-          if (tag === "OL") {
+          if (tag === 'OL') {
             nodeMarkdown += parseOrderedList(childNode, level);
           }
-          if (tag === "UL") {
+          if (tag === 'UL') {
             nodeMarkdown += parseUnorderedList(childNode, level);
           }
-          if (tag === "PRE") {
+          if (tag === 'PRE') {
             nodeMarkdown += parseCodeBlock(childNode);
           }
-          if (tag === "TABLE") {
+          if (tag === 'TABLE') {
             nodeMarkdown += parseTable(childNode);
           }
-          if (tag === "CODE") {
+          if (tag === 'CODE') {
             nodeMarkdown += parseInlineCode(childNode);
           }
 
-          if (!["CODE", "STRONG", "EM", "DEL"].includes(tag)) {
-            nodeMarkdown += "\n\n";
+          if (!['CODE', 'STRONG', 'EM', 'DEL'].includes(tag)) {
+            nodeMarkdown += '\n\n';
           }
         }
       }
     } else {
       throw new Error(
-        `Edge case encountered: node.tagName: ${node.tagName}\n`
-        + "Please contact the author."
+        `Edge case encountered: node.tagName: ${node.tagName}\n` +
+          'Please contact the author.'
       );
     }
   }
   return nodeMarkdown;
 }
 
-
 function parseParagraph(node) {
   return replaceString(node.outerHTML);
 }
 
-
 function parseBlockQuote(node, level) {
-  var blockQuoteMarkdown = "\n";
+  var blockQuoteMarkdown = '\n';
   const spaces = getSpaces(level);
   const quoteHead = blockQuoteUtils.makeQuoteHead(spaces);
   const childNodes = node.childNodes;
 
   for (var i = 0; i < childNodes.length; i++) {
     const blockQuoteNode = childNodes[i];
-    if (blockQuoteNode.tagName === "BLOCKQUOTE") {
+    if (blockQuoteNode.tagName === 'BLOCKQUOTE') {
       blockQuoteMarkdown += parseBlockQuote(blockQuoteNode, level);
     } else {
-      blockQuoteMarkdown += ("\n" + parseNode(blockQuoteNode, level + 1) + "\n");
+      blockQuoteMarkdown += '\n' + parseNode(blockQuoteNode, level + 1) + '\n';
     }
   }
 
-  const withQuoteHead = quoteHead
-    + blockQuoteUtils.trimAndAddPaddingNewlines(blockQuoteMarkdown).replace(
-      /\n/g,
-      quoteHead,
-    );
+  const withQuoteHead =
+    quoteHead +
+    blockQuoteUtils
+      .trimAndAddPaddingNewlines(blockQuoteMarkdown)
+      .replace(/\n/g, quoteHead);
   const qhReplaced = blockQuoteUtils.replaceQuoteHeadFromEnd(withQuoteHead);
   const qhRemoved = blockQuoteUtils.removeRedundantQuoteHeads(qhReplaced);
   return qhRemoved;
 }
 
-
 function parseOrderedList(node, level) {
-  var orderedListMarkdown = "\n";
+  var orderedListMarkdown = '\n';
   const spaces = getSpaces(level);
   const childNodes = node.childNodes;
 
@@ -129,20 +125,20 @@ function parseOrderedList(node, level) {
 
     if (
       listItemNode.nodeType === Node.ELEMENT_NODE &&
-      listItemNode.tagName === "LI"
+      listItemNode.tagName === 'LI'
     ) {
-      orderedListMarkdown += `${spaces}${i + node.start}. ${
-        parseNode(listItemNode, level + 1)
-      }\n`;
+      orderedListMarkdown += `${spaces}${i + node.start}. ${parseNode(
+        listItemNode,
+        level + 1
+      )}\n`;
     }
   }
 
-  return orderedListMarkdown + "\n";
+  return orderedListMarkdown + '\n';
 }
-
 
 function parseUnorderedList(node, level) {
-  var unorderedListMarkdown = "\n";
+  var unorderedListMarkdown = '\n';
   const spaces = getSpaces(level);
   const childNodes = node.childNodes;
 
@@ -151,80 +147,70 @@ function parseUnorderedList(node, level) {
 
     if (
       listItemNode.nodeType === Node.ELEMENT_NODE &&
-      listItemNode.tagName === "LI"
+      listItemNode.tagName === 'LI'
     ) {
-      unorderedListMarkdown += `${spaces}- ${
-        parseNode(listItemNode, level + 1)
-      }\n`;
+      unorderedListMarkdown += `${spaces}- ${parseNode(
+        listItemNode,
+        level + 1
+      )}\n`;
     }
   }
 
-  return unorderedListMarkdown + "\n";
+  return unorderedListMarkdown + '\n';
 }
 
-
 function parseCodeBlock(node) {
-  const splitContents = node.textContent.split("Copy code");
+  const splitContents = node.textContent.split('Copy code');
   const language = splitContents[0].trim();
   const code = splitContents[1].trim();
 
   return `\`\`\`${language}\n${code}\n\`\`\`\n`;
 }
 
-
 function parseInlineCode(node) {
-  return "`" + node.textContent + "`";
+  return '`' + node.textContent + '`';
 }
 
-
 function parseTable(node) {
-  let tableMarkdown = "\n";
+  let tableMarkdown = '\n';
   node.childNodes.forEach((tableSectionNode) => {
     if (
       tableSectionNode.nodeType === Node.ELEMENT_NODE &&
-      (tableSectionNode.tagName === "THEAD" ||
-        tableSectionNode.tagName === "TBODY")
+      (tableSectionNode.tagName === 'THEAD' ||
+        tableSectionNode.tagName === 'TBODY')
     ) {
       // Get table rows
-      let tableRows = "";
+      let tableRows = '';
       let tableColCount = 0;
-      tableSectionNode.childNodes.forEach(
-        (tableRowNode) => {
-          if (
-            tableRowNode.nodeType === Node.ELEMENT_NODE &&
-            tableRowNode.tagName === "TR"
-          ) {
-            // Get table cells
-            let tableCells = "";
+      tableSectionNode.childNodes.forEach((tableRowNode) => {
+        if (
+          tableRowNode.nodeType === Node.ELEMENT_NODE &&
+          tableRowNode.tagName === 'TR'
+        ) {
+          // Get table cells
+          let tableCells = '';
 
-            tableRowNode.childNodes.forEach(
-              (tableCellNode) => {
-                if (
-                  tableCellNode.nodeType ===
-                    Node.ELEMENT_NODE &&
-                  (tableCellNode.tagName === "TD" ||
-                    tableCellNode.tagName === "TH")
-                ) {
-                  tableCells += `| ${replaceString(tableCellNode.outerHTML)} `;
-                  if (
-                    tableSectionNode.tagName === "THEAD"
-                  ) {
-                    tableColCount++;
-                  }
-                }
+          tableRowNode.childNodes.forEach((tableCellNode) => {
+            if (
+              tableCellNode.nodeType === Node.ELEMENT_NODE &&
+              (tableCellNode.tagName === 'TD' || tableCellNode.tagName === 'TH')
+            ) {
+              tableCells += `| ${replaceString(tableCellNode.outerHTML)} `;
+              if (tableSectionNode.tagName === 'THEAD') {
+                tableColCount++;
               }
-            );
-            tableRows += `${tableCells}|\n`;
-          }
+            }
+          });
+          tableRows += `${tableCells}|\n`;
         }
-      );
+      });
 
       tableMarkdown += tableRows;
 
-      if (tableSectionNode.tagName === "THEAD") {
+      if (tableSectionNode.tagName === 'THEAD') {
         const headerRowDivider = `| ${Array(tableColCount)
-          .fill("---")
-          .join(" | ")} |\n`;
+          .fill('---')
+          .join(' | ')} |\n`;
         tableMarkdown += headerRowDivider;
       }
     }
@@ -233,10 +219,9 @@ function parseTable(node) {
   return tableMarkdown;
 }
 
-
 function getSpaces(level) {
   if (level === undefined) {
-    throw new Error("Please pass in `level` to `getSpaces()`");
+    throw new Error('Please pass in `level` to `getSpaces()`');
   }
 
   // Multiply the level by 3 to get the number of spaces
@@ -247,8 +232,7 @@ function getSpaces(level) {
   const numSpaces = level * 3;
 
   // Create a new string with the specified number of spaces
-  return " ".repeat(numSpaces);
+  return ' '.repeat(numSpaces);
 }
-
 
 module.exports = parseNode;

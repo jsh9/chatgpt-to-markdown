@@ -1,6 +1,5 @@
 function getHorizontalRules() {
-  return "----------\n\n";
+  return '----------\n\n';
 }
-
 
 module.exports = getHorizontalRules;
