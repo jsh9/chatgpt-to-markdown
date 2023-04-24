@@ -31,5 +31,5 @@ jobs:
 
       - name: Run code auto-formatting
         run: |
-          npx prettier --write "src/**/*.js"
+          npm run auto-format
           git diff --exit-code
