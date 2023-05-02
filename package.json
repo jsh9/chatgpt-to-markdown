@@ -1,6 +1,6 @@
 {
     "name": "chatgpt-to-markdown",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Save ChatGPT Q&A page as markdown",
     "scripts": {
         "build": "npx webpack --mode production",
