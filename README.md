@@ -4,7 +4,11 @@ This is a Chrome and Edge extension to download the ChatGPT Q&A page into a mark
 
 ## 1. Installation
 
-This extension is not on the Chrome Web Store yet. To install it manually into your Chrome or Edge browser, following the steps below:
+To install it from the Chrome Web Store, go to this URL: https://chrome.google.com/webstore/detail/chatgpt-to-markdown/ajogklnjecgpjfalkokkencdlbnhiohb
+
+(Extensions on the Chrome Web Store can also be directly installed to Edge too.)
+
+Alternatively, if you'd like to use this extension in the developer mode, following the steps below to install it:
 
 1. Download this extension. You can choose either options:
     * Download the latest stable release from the [Releases](https://github.com/jsh9/chatgpt-to-markdown/releases) page
