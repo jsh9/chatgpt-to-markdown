@@ -21,10 +21,8 @@ module.exports = function (console, fileType) {
     let filename = title
       ? title
           .trim()
-          .toLowerCase()
           .replace(/^[^\w\d]+|[^\w\d]+$/g, '')
-          .replace(/[\s\W-]+/g, '-')
-      : 'chatgpt';
+      : 'chatGPT';
     if (fileType.toLowerCase() === 'json') {
       filename += '.json';
       mimeType = 'text/json';
