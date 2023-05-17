@@ -21,7 +21,6 @@ module.exports = function (console, fileType) {
     let filename = title
       ? title
           .trim()
-          .replace(/^[^\w\d]+|[^\w\d]+$/g, '')
           .replace(/["]/g, "'")
           .replace(/[\\/:*?"<>|]/g, '-')
       : 'chatGPT';
