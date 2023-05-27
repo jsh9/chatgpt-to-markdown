@@ -21,8 +21,9 @@ module.exports = function (console, fileType) {
     let filename = title
       ? title
           .trim()
-          .replace(/["]/g, "'")
-          .replace(/[\\/:*?"<>|]/g, '-')
+          .replace(/["]/g, "'")  // replace double quote with single quote
+          .replace(/[\\/:*?"<>|]/g, '-')  // replace non-filename-elegible symbols with "-"
+          .replace(/\.$/, '')  // remove dot at the end
       : 'chatGPT';
     if (fileType.toLowerCase() === 'json') {
       filename += '.json';
