@@ -20,18 +20,16 @@ const blockQuoteUtils = require('./blockQuoteUtils');
 function parseNode(node, level) {
   var nodeMarkdown = '';
 
-  if (node.nodeType === Node.TEXT_NODE) {
-    nodeMarkdown += getHorizontalRules();
-    nodeMarkdown += `## Question\n\n`;
-    nodeMarkdown += node.textContent;
-    nodeMarkdown += '\n\n';
-  }
-
   if (node.nodeType === Node.ELEMENT_NODE) {
     const childNodes = node.childNodes;
 
+    if (node.className == 'empty:hidden') {
+      nodeMarkdown += getHorizontalRules();
+      nodeMarkdown += `\n\n## Question\n\n`;
+    }
+
     if (node.className.includes('markdown prose')) {
-      nodeMarkdown += `## Answer\n\n`;
+      nodeMarkdown += `\n\n## Answer\n\n`;
     }
 
     if (node.tagName === 'OL') {

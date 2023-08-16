@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "ChatGPT to Markdown",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A Chrome extension to save ChatGPT Q&A page as markdown",
     "permissions": ["activeTab", "scripting"],
     "action": {
