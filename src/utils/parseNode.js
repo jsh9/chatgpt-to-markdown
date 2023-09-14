@@ -47,6 +47,9 @@ function parseNode(node, level) {
         if (childNode.nodeType === Node.ELEMENT_NODE) {
           const tag = childNode.tagName;
 
+          if (['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(tag)) {
+            nodeMarkdown += parseHeader(childNode, tag);
+          }
           if (['P', 'LI', 'STRONG', 'EM', 'DEL'].includes(tag)) {
             nodeMarkdown += parseParagraph(childNode);
           }
@@ -86,6 +89,20 @@ function parseNode(node, level) {
 
 function parseParagraph(node) {
   return replaceString(node.outerHTML);
+}
+
+function parseHeader(node, tag) {
+  var headerLevel = parseInt(tag.charAt(tag.length - 1), 10);
+  var pounds = generatePounds(headerLevel);
+  return pounds + ' ' + replaceString(node.outerHTML);
+}
+
+function generatePounds(count) {
+  let pounds = '';
+  for (let i = 0; i < count; i++) {
+    pounds += '#';
+  }
+  return pounds;
 }
 
 function parseBlockQuote(node, level) {

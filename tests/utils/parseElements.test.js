@@ -11,6 +11,7 @@ global.Node = {
 };
 
 test.each([
+  ['headers_in_answer.html', 'headers_in_answer.md'],
   ['2023_08_new_format.html', '2023_08_new_format.md'],
   ['plain_paragraphs.html', 'plain_paragraphs.md'],
   ['block_quotes_0.html', 'block_quotes_0.md'],
