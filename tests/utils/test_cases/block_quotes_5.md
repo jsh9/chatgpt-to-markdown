@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Can you write something into a bullet list, and in some of the bullets, can you put a markdown block quote?
 
-## Answer
+# _Answer_
 
 Sure, here's an example of a bullet list with markdown block quotes in some of the bullets:
 

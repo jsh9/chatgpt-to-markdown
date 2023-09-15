@@ -25,11 +25,11 @@ function parseNode(node, level) {
 
     if (node.className == 'empty:hidden') {
       nodeMarkdown += getHorizontalRules();
-      nodeMarkdown += `\n\n## Question\n\n`;
+      nodeMarkdown += `\n\n# _Question_\n\n`;
     }
 
     if (node.className.includes('markdown prose')) {
-      nodeMarkdown += `\n\n## Answer\n\n`;
+      nodeMarkdown += `\n\n# _Answer_\n\n`;
     }
 
     if (node.tagName === 'OL') {

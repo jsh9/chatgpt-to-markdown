@@ -1,38 +1,38 @@
-## Question
+# _Question_
 
 Hi ChatGPT!
 
-## Answer
+# _Answer_
 
 Hello! How can I assist you today?
 
 ----------
 
-## Question
+# _Question_
 
 What version are you?
 
-## Answer
+# _Answer_
 
 I am based on the GPT-4 architecture. How can I help you today?
 
 ----------
 
-## Question
+# _Question_
 
 Just want to casually chat with you.
 
-## Answer
+# _Answer_
 
 Of course! Casual chats are always welcome. What's on your mind? Anything you're curious about or want to discuss?
 
 ----------
 
-## Question
+# _Question_
 
 Which number is bigger?  1234^5678 or 5678^1234?
 
-## Answer
+# _Answer_
 
 To determine which number is larger, 123456781234^{5678}12345678 or 567812345678^{1234}56781234, we can use logarithms.
 

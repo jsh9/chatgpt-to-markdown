@@ -1,4 +1,4 @@
-## Question
+# _Question_
 
 Please generate texts with the following styling:
 - bold
@@ -9,7 +9,7 @@ Please generate texts with the following styling:
 - subscript
 - superscript
 
-## Answer
+# _Answer_
 
 Sure, here are some examples of text with different styles:
 

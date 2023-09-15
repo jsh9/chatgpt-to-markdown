@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Can you write three paragraphs of anything?
 
-## Answer
+# _Answer_
 
 Sure, here are three paragraphs on the topic of creativity:
 

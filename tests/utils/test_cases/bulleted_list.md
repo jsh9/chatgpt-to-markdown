@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Can you generate the following text: it has 4 bullet points.  The 1st bullet points should contain some texts that are bold, some texts that are italic, and some texts that are inline code.  The 2nd bullet point should contain a table.  The 3rd bullet point should contain 2 code blocks with some texts in between.  The last (4th) bullet point should have 3 levels of nested bullets (with the 2nd level being an ordered list item).
 
-## Answer
+# _Answer_
 
 Sure, here is the text you requested:
 
@@ -41,11 +41,11 @@ my_function()
 
 ----------
 
-## Question
+# _Question_
 
 Can you generate 4 bullet points: the first word of the first bullet point should be bold, the first 2 words of the second bullet point should be italic, the first 3 words of the third bullet point should be an inline code. and the first 4 words of the last bullet point should be both bold and italic.
 
-## Answer
+# _Answer_
 
 Sure, here are four bullet points that meet your requirements:
 

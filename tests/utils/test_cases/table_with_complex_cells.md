@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Can you generate a table where some of the cells have bold texts, some have italic, some have inline code, some have hyperlinks, and some have strikethrough texts?
 
-## Answer
+# _Answer_
 
 Yes, I can generate such a table for you. Here's an example:
 

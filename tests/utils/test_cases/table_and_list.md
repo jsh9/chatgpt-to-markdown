@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 I'm learning Javascript.  Can you summarize the difference between const, var, and let in a table?
 
-## Answer
+# _Answer_
 
 Certainly! Here's a table summarizing the differences between `const`, `var`, and `let` in JavaScript:
 

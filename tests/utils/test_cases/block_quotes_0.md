@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Can you generate some texts with normal texts mixed with markdown block quotes?
 
-## Answer
+# _Answer_
 
 Sure, here's an example of a text with normal text and markdown block quotes:
 
@@ -18,11 +18,11 @@ Sure, here's an example of a text with normal text and markdown block quotes:
 
 ----------
 
-## Question
+# _Question_
 
 Can you put block quotes between normal texts?
 
-## Answer
+# _Answer_
 
 Yes, you can definitely use block quotes between normal text. Here's an example:
 
@@ -42,11 +42,11 @@ With dedication and perseverance, you can become a skilled programmer and open u
 
 ----------
 
-## Question
+# _Question_
 
 Can you put block quotes within an unordered list?
 
-## Answer
+# _Answer_
 
 Yes, you can definitely use block quotes within an unordered list. Here's an example:
 
@@ -67,11 +67,11 @@ By using a block quote within the list item for Java and C++, you can provide ad
 
 ----------
 
-## Question
+# _Question_
 
 Can you put block quotes within a table?
 
-## Answer
+# _Answer_
 
 Yes, you can put block quotes within a table in Markdown. Here's an example:
 
@@ -94,11 +94,11 @@ In this table, we have used block quotes to provide additional information for t
 
 ----------
 
-## Question
+# _Question_
 
 Can you include bold, italic, bold and italic, strikethrough, and inline code in block quotes?
 
-## Answer
+# _Answer_
 
 Yes, you can include bold, italic, bold and italic, strikethrough, and inline code in block quotes. Here's an example:
 
@@ -114,11 +114,11 @@ Yes, you can include bold, italic, bold and italic, strikethrough, and inline co
 
 ----------
 
-## Question
+# _Question_
 
 Can you print a block quote with unordered and ordered lists in it?
 
-## Answer
+# _Answer_
 
 Yes, you can print a block quote with unordered and ordered lists in it. Here's an example:
 

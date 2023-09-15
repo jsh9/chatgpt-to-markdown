@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Can you show me a block quote where you include bold, italic, bold and italic, strikethrough, and inline code in it?  Also, add a nested block quote in it.
 
-## Answer
+# _Answer_
 
 Sure, here's an example block quote that includes all the formatting options you mentioned, including a nested block quote:
 

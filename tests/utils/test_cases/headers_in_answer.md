@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Hi, please generate a response of a few paragraphs, and separate the paragraphs into several sections, each with a section header?  Please make the section headers larger.
 
-## Answer
+# _Answer_
 
 # Introduction
 

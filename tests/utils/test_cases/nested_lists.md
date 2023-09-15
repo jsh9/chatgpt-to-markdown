@@ -1,8 +1,8 @@
-## Question
+# _Question_
 
 Please print out a nested list of 3 levels: the 1st level is an unordered list (i.e., bullet points), the 2nd level is ordered (i.e., 1, 2, 3, ...), and the 3rd level is again unordered.
 
-## Answer
+# _Answer_
 
 Here's a nested list with 3 levels:
 
@@ -35,11 +35,11 @@ Here's a nested list with 3 levels:
 
 ----------
 
-## Question
+# _Question_
 
 I'd like the 1st level to be ordered instead.
 
-## Answer
+# _Answer_
 
 Here's a nested list with the 1st level as an ordered list:
 
