@@ -22,9 +22,36 @@ function trimAndAddTrailingNewline(inputString) {
 
 function trimEachLine(str) {
   let lines = str.split('\n');
-  let trimmedLines = lines.map((line) => line.trimRight());
-  let trimmedStr = trimmedLines.join('\n');
-  return trimmedStr;
+  let inCodeBlock = false;
+
+  const trimmedLines = lines.map((line) => {
+    if (line.startsWith('```')) {
+      inCodeBlock = !inCodeBlock;
+      return line.trimRight();
+    }
+
+    if (inCodeBlock) {
+      return line;
+    }
+
+    const rightTrimmed = line.trimRight();
+
+    if (/^\s*[-*]\s/.test(rightTrimmed)) {
+      return rightTrimmed;
+    }
+
+    if (/^\s*\d+\.\s/.test(rightTrimmed)) {
+      return rightTrimmed;
+    }
+
+    if (/^\s*>/.test(rightTrimmed)) {
+      return rightTrimmed;
+    }
+
+    return rightTrimmed.trimStart();
+  });
+
+  return trimmedLines.join('\n');
 }
 
 module.exports = cleanUpString;

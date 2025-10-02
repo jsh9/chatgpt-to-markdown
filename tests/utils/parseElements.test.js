@@ -26,13 +26,18 @@ test.each([
   ['table_and_list.html', 'table_and_list.md'],
   ['different_text_styles.html', 'different_text_styles.md'],
   ['table_with_complex_cells.html', 'table_with_complex_cells.md'],
+  ['timestamp_and_hr.html', 'timestamp_and_hr.md'],
+  ['bold_and_headings.html', 'bold_and_headings.md'],
 ])('%s => %s', (htmlFileName, mdFileName) => {
   const inputHtml = fs.readFileSync(testCaseDir + htmlFileName, encoding);
   const dom = new JSDOM(inputHtml);
   global.document = dom.window.document;
-  const elements = dom.window.document.querySelectorAll(
-    "[class*='min-h-[20px]']",
-  );
+  const doc = dom.window.document;
+  let elements = doc.querySelectorAll('[data-message-author-role]');
+
+  if (!elements || elements.length === 0) {
+    elements = doc.querySelectorAll("[class*='min-h-[20px]']");
+  }
   const parsedMd = parseElements(elements, 0);
   const expectedMd = fs.readFileSync(testCaseDir + mdFileName, encoding);
   expect(parsedMd).toEqual(expectedMd);

@@ -17,20 +17,107 @@ const replaceString = require('./replaceString');
 const getHorizontalRules = require('./getHorizontalRules');
 const blockQuoteUtils = require('./blockQuoteUtils');
 
+let headerHandledMessages = new WeakSet();
+
+function resetHeaderHandledMessages() {
+  headerHandledMessages = new WeakSet();
+}
+
+function getDatasetRole(node) {
+  if (
+    node &&
+    node.dataset &&
+    typeof node.dataset.messageAuthorRole === 'string'
+  ) {
+    const role = node.dataset.messageAuthorRole.toLowerCase();
+    if (role === 'user' || role === 'assistant') {
+      return role;
+    }
+  }
+
+  return null;
+}
+
+function getMessageContainer(node) {
+  if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+    return null;
+  }
+
+  if (getDatasetRole(node)) {
+    return node;
+  }
+
+  if (typeof node.closest === 'function') {
+    const ancestor = node.closest('[data-message-author-role]');
+    if (ancestor) {
+      return ancestor;
+    }
+  }
+
+  return null;
+}
+
+function buildHeaderForRole(role) {
+  if (role === 'user') {
+    return getHorizontalRules() + `\n\n# _Question_\n\n`;
+  }
+
+  if (role === 'assistant') {
+    return `\n\n# _Answer_\n\n`;
+  }
+
+  return '';
+}
+
+function maybeAddMessageHeading(node) {
+  if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+    return '';
+  }
+
+  const datasetRole = getDatasetRole(node);
+  if (datasetRole) {
+    if (!headerHandledMessages.has(node)) {
+      const header = buildHeaderForRole(datasetRole);
+      if (header) {
+        headerHandledMessages.add(node);
+        return header;
+      }
+    }
+    return '';
+  }
+
+  const className = typeof node.className === 'string' ? node.className : '';
+  let roleFromClass = null;
+
+  if (className === 'empty:hidden') {
+    roleFromClass = 'user';
+  } else if (className.includes('markdown prose')) {
+    roleFromClass = 'assistant';
+  }
+
+  if (!roleFromClass) {
+    return '';
+  }
+
+  const container = getMessageContainer(node) || node;
+  if (headerHandledMessages.has(container)) {
+    return '';
+  }
+
+  const header = buildHeaderForRole(roleFromClass);
+  if (header) {
+    headerHandledMessages.add(container);
+  }
+
+  return header;
+}
+
 function parseNode(node, level) {
   var nodeMarkdown = '';
 
   if (node.nodeType === Node.ELEMENT_NODE) {
+    nodeMarkdown += maybeAddMessageHeading(node);
     const childNodes = node.childNodes;
-
-    if (node.className == 'empty:hidden') {
-      nodeMarkdown += getHorizontalRules();
-      nodeMarkdown += `\n\n# _Question_\n\n`;
-    }
-
-    if (node.className.includes('markdown prose')) {
-      nodeMarkdown += `\n\n# _Answer_\n\n`;
-    }
 
     if (node.tagName === 'OL') {
       nodeMarkdown += parseOrderedList(node, level);
@@ -41,38 +128,127 @@ function parseNode(node, level) {
         const childNode = childNodes[j];
 
         if (childNode.nodeType == Node.TEXT_NODE) {
-          nodeMarkdown += childNode.textContent;
+          const textContent = childNode.textContent;
+
+          if (typeof textContent === 'string') {
+            const hasNewline = /\r?\n/.test(textContent);
+
+            if (!hasNewline) {
+              let normalized = textContent.replace(/\u00a0/g, ' ');
+              const hasLeadingSpace = /^\s/.test(normalized);
+              const hasTrailingSpace = /\s$/.test(normalized);
+              normalized = normalized.trim();
+
+              if (normalized.length === 0) {
+                continue;
+              }
+
+              if (hasLeadingSpace) {
+                normalized = ' ' + normalized;
+              }
+
+              if (hasTrailingSpace) {
+                normalized = normalized + ' ';
+              }
+
+              nodeMarkdown += normalized;
+              continue;
+            }
+
+            const normalizedLines = textContent
+              .replace(/\u00a0/g, ' ')
+              .split(/\r?\n/)
+              .map((line) => line.trim());
+
+            const joined = normalizedLines.join('\n').trim();
+
+            if (joined.length > 0) {
+              nodeMarkdown += joined;
+            }
+          }
         }
 
         if (childNode.nodeType === Node.ELEMENT_NODE) {
           const tag = childNode.tagName;
+          let handled = false;
 
           if (['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(tag)) {
             nodeMarkdown += parseHeader(childNode, tag);
+            handled = true;
           }
-          if (['P', 'LI', 'STRONG', 'EM', 'DEL'].includes(tag)) {
+          if (
+            [
+              'P',
+              'LI',
+              'STRONG',
+              'EM',
+              'DEL',
+              'SPAN',
+              'B',
+              'I',
+              'U',
+              'S',
+            ].includes(tag)
+          ) {
             nodeMarkdown += parseParagraph(childNode);
+            handled = true;
+          }
+          if (tag === 'SUB' || tag === 'SUP') {
+            nodeMarkdown += childNode.outerHTML;
+            handled = true;
+          }
+          if (tag === 'TIME') {
+            handled = true;
+            continue;
           }
           if (tag === 'BLOCKQUOTE') {
             nodeMarkdown += parseBlockQuote(childNode, level);
+            handled = true;
           }
           if (tag === 'OL') {
             nodeMarkdown += parseOrderedList(childNode, level);
+            handled = true;
           }
           if (tag === 'UL') {
             nodeMarkdown += parseUnorderedList(childNode, level);
+            handled = true;
           }
           if (tag === 'PRE') {
             nodeMarkdown += parseCodeBlock(childNode);
+            handled = true;
           }
           if (tag === 'TABLE') {
             nodeMarkdown += parseTable(childNode);
+            handled = true;
           }
           if (tag === 'CODE') {
             nodeMarkdown += parseInlineCode(childNode);
+            handled = true;
+          }
+          if (tag === 'HR') {
+            nodeMarkdown += getHorizontalRules();
+            handled = true;
           }
 
-          if (!['CODE', 'STRONG', 'EM', 'DEL'].includes(tag)) {
+          if (!handled) {
+            nodeMarkdown += parseNode(childNode, level);
+          }
+
+          if (
+            ![
+              'CODE',
+              'STRONG',
+              'EM',
+              'DEL',
+              'SPAN',
+              'SUB',
+              'SUP',
+              'B',
+              'I',
+              'U',
+              'S',
+            ].includes(tag)
+          ) {
             nodeMarkdown += '\n\n';
           }
         }
@@ -91,10 +267,60 @@ function parseParagraph(node) {
   return replaceString(node.outerHTML);
 }
 
+function stripWrappingFormatting(text) {
+  let result = text.trim();
+  let changed = true;
+  const wrappers = [
+    ['**', '**'],
+    ['__', '__'],
+    ['*', '*'],
+    ['_', '_'],
+  ];
+
+  while (changed) {
+    changed = false;
+    for (const [start, end] of wrappers) {
+      if (
+        result.startsWith(start) &&
+        result.endsWith(end) &&
+        result.length > start.length + end.length
+      ) {
+        result = result.slice(start.length, result.length - end.length).trim();
+        changed = true;
+      }
+    }
+  }
+
+  return result;
+}
+
 function parseHeader(node, tag) {
   var headerLevel = parseInt(tag.charAt(tag.length - 1), 10);
   var pounds = generatePounds(headerLevel);
-  return pounds + ' ' + replaceString(node.outerHTML);
+  var content = replaceString(node.outerHTML);
+  content = stripWrappingFormatting(content);
+  if (headerLevel >= 2) {
+    content = removeBoldFormatting(content);
+  }
+  return pounds + ' ' + content;
+}
+
+function removeBoldFormatting(text) {
+  let previous = null;
+  let result = text;
+
+  while (previous !== result) {
+    previous = result;
+    result = result.replace(/\*\*(.*?)\*\*/g, '$1');
+  }
+
+  previous = null;
+  while (previous !== result) {
+    previous = result;
+    result = result.replace(/__(.*?)__/g, '$1');
+  }
+
+  return result;
 }
 
 function generatePounds(count) {
@@ -177,9 +403,70 @@ function parseUnorderedList(node, level) {
 function parseCodeBlock(node) {
   const splitContents = node.textContent.split('Copy code');
   const language = splitContents[0].trim();
-  const code = splitContents[1].trim();
+  const rawCode = splitContents[1].trimEnd();
 
-  return `\`\`\`${language}\n${code}\n\`\`\`\n`;
+  const codeLines = rawCode.split('\n');
+  let minIndent = Infinity;
+
+  for (const line of codeLines) {
+    const trimmed = line.trim();
+    if (trimmed.length === 0) {
+      continue;
+    }
+    const leadingSpaces = line.match(/^\s*/)[0].length;
+    if (leadingSpaces < minIndent) {
+      minIndent = leadingSpaces;
+    }
+  }
+
+  if (!isFinite(minIndent)) {
+    minIndent = 0;
+  }
+
+  const dedentedLines =
+    minIndent > 0
+      ? codeLines.map((line) => line.slice(Math.min(minIndent, line.length)))
+      : codeLines;
+
+  const positiveIndents = dedentedLines
+    .map((line) => line.match(/^\s*/)[0].length)
+    .filter((indent) => indent > 0);
+
+  let scaledLines = dedentedLines;
+
+  if (positiveIndents.length > 0) {
+    const baseIndent = Math.min(...positiveIndents);
+
+    if (baseIndent > 4 && baseIndent % 4 === 0) {
+      const scale = baseIndent / 4;
+      scaledLines = dedentedLines.map((line) => {
+        const match = line.match(/^(\s*)(.*)$/);
+        const spaces = match[1].length;
+
+        if (spaces === 0) {
+          return match[2];
+        }
+
+        const normalizedSpaces = ' '.repeat(Math.round(spaces / scale));
+        return normalizedSpaces + match[2];
+      });
+    }
+  }
+
+  const adjustedLines = scaledLines.map((line) => {
+    const match = line.match(/^(\s*)(.*)$/);
+    const content = match[2];
+
+    if (/^[-*>]/.test(content)) {
+      return content;
+    }
+
+    return line;
+  });
+
+  const normalizedCode = adjustedLines.join('\n');
+
+  return `\`\`\`${language}\n${normalizedCode}\n\`\`\`\n`;
 }
 
 function parseInlineCode(node) {
@@ -251,3 +538,4 @@ function getSpaces(level) {
 }
 
 module.exports = parseNode;
+module.exports.resetHeaderHandledMessages = resetHeaderHandledMessages;

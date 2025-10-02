@@ -1,11 +1,11 @@
 function isValidUrl(url) {
-  const pattern = /^https:\/\/chat\.openai\.com\/.*$/;
+  const pattern = /^https:\/\/chatgpt\.com\/.*$/;
   return pattern.test(url);
 }
 
 
 function showAlert() {
-  alert('This extension only works on https://chat.openai.com/*');
+  alert('This extension only works on https://chatgpt.com/*');
 }
 
 

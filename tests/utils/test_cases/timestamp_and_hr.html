@@ -2,21 +2,16 @@
   <div data-message-author-role="user" class="min-h-8 text-message relative flex w-full flex-col">
     <div class="flex w-full flex-col gap-1 empty:hidden items-end rtl:items-start">
       <div class="user-message-bubble-color relative rounded-[18px] px-4 py-1.5 data-[multiline]:py-3 max-w-[var(--user-chat-width,70%)]">
-        <div class="whitespace-pre-wrap">Please generate texts with the following styling:
-- bold
-- italic
-- strikethrough
-- bold and nested italic
-- all bold and italic
-- subscript
-- superscript</div>
+        <div class="whitespace-pre-wrap"><time datetime="2024-01-01T10:00:00Z">10:00 AM</time> Please include an hr example in the answer.</div>
       </div>
     </div>
   </div>
   <div data-message-author-role="assistant" class="min-h-8 text-message relative flex w-full flex-col" data-message-model-slug="gpt-4o">
     <div class="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
       <div class="markdown prose dark:prose-invert w-full break-words light markdown-new-styling">
-        <p>Sure, here are some examples of text with different styles:</p><ul><li><strong>This text is bold.</strong></li><li><em>This text is italic.</em></li><li><del>This text is strikethrough.</del></li><li><strong>This text is bold and <em>this part is nested italic</em>.</strong></li><li><em><strong>This text is all bold and italic.</strong></em></li><li>H2O is a molecule with subscript: H<sub>2</sub>O.</li><li>E=mc^2 has superscript: E=mc<sup>2</sup>.</li></ul>
+        <p>Sure! Here is the first paragraph before the rule.</p>
+        <hr>
+        <p>This text comes after the horizontal rule.</p>
       </div>
     </div>
   </div>

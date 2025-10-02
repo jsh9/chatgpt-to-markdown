@@ -3,10 +3,18 @@ module.exports = function (input) {
 
   var replaced = input_
     .replace(/<p>|<\/p>|<li>|<\/li>|<th>|<\/th>|<td>|<\/td>/gi, '')
-    .replace(/<strong>|<\/strong>/gi, '**')
-    .replace(/<em>|<\/em>/gi, '_')
-    .replace(/<del>|<\/del>/gi, '~~')
-    .replace(/<code>|<\/code>/gi, '`');
+    .replace(/<strong\b[^>]*>/gi, '**')
+    .replace(/<\/strong>/gi, '**')
+    .replace(/<b\b[^>]*>/gi, '**')
+    .replace(/<\/b>/gi, '**')
+    .replace(/<em\b[^>]*>/gi, '_')
+    .replace(/<\/em>/gi, '_')
+    .replace(/<i\b[^>]*>/gi, '_')
+    .replace(/<\/i>/gi, '_')
+    .replace(/<del\b[^>]*>/gi, '~~')
+    .replace(/<\/del>/gi, '~~')
+    .replace(/<code\b[^>]*>/gi, '`')
+    .replace(/<\/code>/gi, '`');
 
   return extractPlainTextFromHtml(replaced);
 };
