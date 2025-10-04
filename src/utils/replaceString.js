@@ -50,17 +50,147 @@ function extractPlainTextFromHtml(html) {
   tempEl.innerHTML = html;
 
   // Traverse the document tree and extract text nodes
-  var text = '';
+  var parts = [];
+
   function traverse(node) {
     if (node.nodeType === Node.TEXT_NODE) {
-      text += node.textContent;
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      for (var i = 0; i < node.childNodes.length; i++) {
-        traverse(node.childNodes[i]);
+      parts.push(node.textContent);
+      return;
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return;
+    }
+
+    if (isKatexDisplayNode(node)) {
+      const latex = extractKatexLatex(node);
+
+      if (latex !== null) {
+        const indent = getDisplayIndent(node);
+        parts.push(indent + '$$\n' + latex + '\n' + indent + '$$');
       }
+
+      return;
+    }
+
+    if (isKatexStructuralNode(node)) {
+      return;
+    }
+
+    if (isKatexInlineNode(node)) {
+      const latex = extractKatexLatex(node);
+
+      if (latex !== null) {
+        parts.push(`$${latex}$`);
+      }
+
+      return;
+    }
+
+    if (node.tagName === 'BR') {
+      parts.push('\n');
+      return;
+    }
+
+    for (var i = 0; i < node.childNodes.length; i++) {
+      traverse(node.childNodes[i]);
     }
   }
+
   traverse(tempEl);
 
-  return text.trim();
+  return parts.join('').trim();
+}
+
+function extractKatexLatex(node) {
+  const annotation = node.querySelector(
+    'annotation[encoding="application/x-tex"]',
+  );
+
+  if (!annotation || typeof annotation.textContent !== 'string') {
+    return null;
+  }
+
+  const latex = annotation.textContent.trim();
+  return latex.length > 0 ? latex : null;
+}
+
+function hasClass(node, className) {
+  return (
+    node.classList &&
+    typeof node.classList.contains === 'function' &&
+    node.classList.contains(className)
+  );
+}
+
+function isKatexDisplayNode(node) {
+  if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+    return false;
+  }
+
+  if (hasClass(node, 'katex-display')) {
+    return true;
+  }
+
+  return hasClass(node, 'katex') && node.getAttribute('display') === 'block';
+}
+
+function isKatexStructuralNode(node) {
+  if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+    return false;
+  }
+
+  const structuralClasses = ['katex-html', 'katex-mathml', 'katex-svg'];
+
+  for (var i = 0; i < structuralClasses.length; i++) {
+    if (hasClass(node, structuralClasses[i])) {
+      return true;
+    }
+  }
+
+  if (hasClass(node, 'katex')) {
+    const parent = node.parentElement;
+
+    if (parent && isKatexDisplayNode(parent)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function isKatexInlineNode(node) {
+  if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+    return false;
+  }
+
+  if (!hasClass(node, 'katex')) {
+    return false;
+  }
+
+  if (isKatexDisplayNode(node)) {
+    return false;
+  }
+
+  const parent = node.parentElement;
+
+  if (parent && isKatexDisplayNode(parent)) {
+    return false;
+  }
+
+  return true;
+}
+
+function getDisplayIndent(node) {
+  var current = node.parentElement;
+
+  while (current) {
+    if (current.tagName === 'LI') {
+      return '  ';
+    }
+
+    current = current.parentElement;
+  }
+
+  return '';
 }

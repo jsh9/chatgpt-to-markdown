@@ -34,12 +34,12 @@ Which number is bigger?  1234^5678 or 5678^1234?
 
 # _Answer_
 
-To determine which number is larger, 123456781234^{5678}12345678 or 567812345678^{1234}56781234, we can use logarithms.
+To determine which number is larger, $1234^{5678}$ or $5678^{1234}$, we can use logarithms.
 
 Let's compare the natural logarithms (ln) of the two numbers:
 
-A = ln(123456781234^{5678}12345678)
-B = ln(567812345678^{1234}56781234)
+A = ln($1234^{5678}$)
+B = ln($5678^{1234}$)
 
 Using the properties of logarithms, these become:
 
@@ -53,4 +53,4 @@ B ≈ 1234 * 8.644121 = 10672.68
 
 Clearly, A is much larger than B.
 
-This means that the logarithm of 123456781234^{5678}12345678 is much larger than the logarithm of 567812345678^{1234}56781234. Since the natural logarithm function is increasing, this means 123456781234^{5678}12345678 is larger than 567812345678^{1234}56781234.
+This means that the logarithm of $1234^{5678}$ is much larger than the logarithm of $5678^{1234}$. Since the natural logarithm function is increasing, this means $1234^{5678}$ is larger than $5678^{1234}$.

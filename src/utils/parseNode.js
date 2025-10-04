@@ -172,11 +172,27 @@ function parseNode(node, level) {
           const tag = childNode.tagName;
           let handled = false;
 
-          if (['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(tag)) {
+          if (shouldIgnoreKatexSubtree(childNode)) {
+            handled = true;
+          }
+
+          const katexContent = handled ? null : parseKatexNode(childNode);
+          if (katexContent) {
+            nodeMarkdown += katexContent.markdown;
+
+            if (katexContent.type === 'display') {
+              nodeMarkdown += '\n\n';
+            }
+
+            handled = true;
+          }
+
+          if (!handled && ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(tag)) {
             nodeMarkdown += parseHeader(childNode, tag);
             handled = true;
           }
           if (
+            !handled &&
             [
               'P',
               'LI',
@@ -193,39 +209,39 @@ function parseNode(node, level) {
             nodeMarkdown += parseParagraph(childNode);
             handled = true;
           }
-          if (tag === 'SUB' || tag === 'SUP') {
+          if (!handled && (tag === 'SUB' || tag === 'SUP')) {
             nodeMarkdown += childNode.outerHTML;
             handled = true;
           }
-          if (tag === 'TIME') {
+          if (!handled && tag === 'TIME') {
             handled = true;
             continue;
           }
-          if (tag === 'BLOCKQUOTE') {
+          if (!handled && tag === 'BLOCKQUOTE') {
             nodeMarkdown += parseBlockQuote(childNode, level);
             handled = true;
           }
-          if (tag === 'OL') {
+          if (!handled && tag === 'OL') {
             nodeMarkdown += parseOrderedList(childNode, level);
             handled = true;
           }
-          if (tag === 'UL') {
+          if (!handled && tag === 'UL') {
             nodeMarkdown += parseUnorderedList(childNode, level);
             handled = true;
           }
-          if (tag === 'PRE') {
+          if (!handled && tag === 'PRE') {
             nodeMarkdown += parseCodeBlock(childNode);
             handled = true;
           }
-          if (tag === 'TABLE') {
+          if (!handled && tag === 'TABLE') {
             nodeMarkdown += parseTable(childNode);
             handled = true;
           }
-          if (tag === 'CODE') {
+          if (!handled && tag === 'CODE') {
             nodeMarkdown += parseInlineCode(childNode);
             handled = true;
           }
-          if (tag === 'HR') {
+          if (!handled && tag === 'HR') {
             nodeMarkdown += getHorizontalRules();
             handled = true;
           }
@@ -265,6 +281,76 @@ function parseNode(node, level) {
 
 function parseParagraph(node) {
   return replaceString(node.outerHTML);
+}
+
+function shouldIgnoreKatexSubtree(node) {
+  if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+    return false;
+  }
+
+  const className = typeof node.className === 'string' ? node.className : '';
+  const classList = className.split(/\s+/).filter(Boolean);
+
+  if (classList.includes('katex-html') || classList.includes('katex-mathml')) {
+    return true;
+  }
+
+  return false;
+}
+
+function parseKatexNode(node) {
+  if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+    return null;
+  }
+
+  const className = typeof node.className === 'string' ? node.className : '';
+  const classList = className.split(/\s+/).filter(Boolean);
+
+  const hasKatexClass = classList.includes('katex');
+  const hasDisplayClass = classList.includes('katex-display');
+
+  if (!hasKatexClass && !hasDisplayClass) {
+    return null;
+  }
+
+  const parent = node.parentElement;
+  const parentIsDisplay = Boolean(
+    parent &&
+      parent.classList &&
+      typeof parent.classList.contains === 'function' &&
+      parent.classList.contains('katex-display'),
+  );
+
+  if (hasKatexClass && parentIsDisplay && !hasDisplayClass) {
+    // Skip the inner <span class="katex"> when a wrapping display node exists.
+    return null;
+  }
+
+  const annotation = node.querySelector(
+    'annotation[encoding="application/x-tex"]',
+  );
+
+  if (!annotation || typeof annotation.textContent !== 'string') {
+    return null;
+  }
+
+  const latex = annotation.textContent.trim();
+
+  if (latex.length === 0) {
+    return null;
+  }
+
+  if (hasDisplayClass || parentIsDisplay) {
+    return {
+      markdown: '$$\n' + latex + '\n$$',
+      type: 'display',
+    };
+  }
+
+  return {
+    markdown: `$${latex}$`,
+    type: 'inline',
+  };
 }
 
 function stripWrappingFormatting(text) {

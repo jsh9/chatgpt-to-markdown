@@ -28,6 +28,7 @@ test.each([
   ['table_with_complex_cells.html', 'table_with_complex_cells.md'],
   ['timestamp_and_hr.html', 'timestamp_and_hr.md'],
   ['bold_and_headings.html', 'bold_and_headings.md'],
+  ['explain_anova.html', 'explain_anova.md'],
 ])('%s => %s', (htmlFileName, mdFileName) => {
   const inputHtml = fs.readFileSync(testCaseDir + htmlFileName, encoding);
   const dom = new JSDOM(inputHtml);
