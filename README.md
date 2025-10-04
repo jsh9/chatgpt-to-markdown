@@ -2,7 +2,20 @@
 
 This is a Chrome and Edge extension to download the ChatGPT Q&A page into a markdown file.
 
-## 1. Installation
+## 1. Key Features
+
+- **🧮 Perfect Math Formula Parsing**: Advanced KaTeX support that correctly handles mathematical equations - even fixes ChatGPT's own math formula parsing bugs
+- **📋 Complex Markdown Support**:
+  - Tables with complex cell content
+  - Nested lists (ordered and unordered)
+  - Multi-level blockquotes
+  - Code blocks with syntax highlighting preservation
+  - Inline code formatting
+- **🎯 Smart Content Detection**: Automatically identifies and properly formats different types of ChatGPT content
+- **⚡ One-Click Export**: Simple keyboard shortcut (`Alt+Shift+5`) or toolbar button click
+- **🔧 Robust Processing**: Handles edge cases and maintains formatting integrity across different ChatGPT UI updates
+
+## 2. Installation
 
 To install it from the Chrome Web Store, go to this URL: https://chrome.google.com/webstore/detail/chatgpt-to-markdown/ajogklnjecgpjfalkokkencdlbnhiohb
 
@@ -18,7 +31,7 @@ Alternatively, if you'd like to use this extension in the developer mode, follow
     * [Chrome](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked)
     * [Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading)
 
-## 2. How to use
+## 3. How to use
 
 Navigate to ChatGPT, and to the conversation that you'd like to save as markdown.
 
@@ -28,11 +41,11 @@ Then click on the icon of this extension, or use the following keyboard shortcut
 
 A markdown file will automatically be saved to your `Downloads` folder.
 
-## 3. Local debugging and testing (for developers)
+## 4. Local debugging and testing (for developers)
 
 You can clone this repository, make small tweaks to it (if you code Javascript) as you'd like.
 
-### 3.1. Building the project
+### 4.1. Building the project
 
 To install and lock the dependencies, run:
 
@@ -46,7 +59,7 @@ To build the code, run:
 npm run build
 ```
 
-### 3.2. Testing
+### 4.2. Testing
 
 To run unit tests, first install dependencies, and then:
 
@@ -54,7 +67,7 @@ To run unit tests, first install dependencies, and then:
 npx jest
 ```
 
-### 3.3 Auto-format code
+### 4.3 Auto-format code
 
 Run this command in the terminal:
 
@@ -64,7 +77,7 @@ npm run auto-format
 
 And then check the file diffs.
 
-### 3.4. CI/CD
+### 4.4. CI/CD
 
 Every pull request will trigger a CI/CD pipeline run, the steps of which are defined in [`./.github/workflows/pipeline.yml`](./.github/workflows/pipeline.yml).
 
@@ -75,7 +88,7 @@ The pipeline automatically checks for the following:
 - The minified script in `dist` is up to date with the code in `src`
 - The code sytles are correct (running [Prettier](https://prettier.io/) does not product any file diff)
 
-## 4. Acknowledgement
+## 5. Acknowledgement
 
 - The core code is adapted from code files in https://github.com/ryanschiang/chatgpt-export
   + The original license is included on the top of the files, if they are partially or fully from the original repository
