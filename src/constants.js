@@ -1,0 +1,40 @@
+const CONSTANTS = {
+  HORIZONTAL_RULE: '----------\n\n',
+  INLINE_ELEMENTS: [
+    'CODE',
+    'STRONG',
+    'EM',
+    'DEL',
+    'SPAN',
+    'SUB',
+    'SUP',
+    'B',
+    'I',
+    'U',
+    'S',
+  ],
+  PARAGRAPH_ELEMENTS: [
+    'P',
+    'LI',
+    'STRONG',
+    'EM',
+    'DEL',
+    'SPAN',
+    'B',
+    'I',
+    'U',
+    'S',
+  ],
+  HEADER_ELEMENTS: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
+  LIST_ELEMENTS: ['OL', 'UL'],
+  BLOCK_ELEMENTS: ['P', 'LI', 'DIV'],
+  SPACES_PER_LEVEL: 3,
+  KATEX_CLASSES: {
+    DISPLAY: 'katex-display',
+    KATEX: 'katex',
+    HTML: 'katex-html',
+    MATHML: 'katex-mathml',
+  },
+};
+
+module.exports = CONSTANTS;

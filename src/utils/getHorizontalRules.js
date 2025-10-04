@@ -1,5 +1,7 @@
+const CONSTANTS = require('../constants');
+
 function getHorizontalRules() {
-  return '----------\n\n';
+  return CONSTANTS.HORIZONTAL_RULE;
 }
 
 module.exports = getHorizontalRules;

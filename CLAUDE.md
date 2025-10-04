@@ -31,15 +31,32 @@ npm install
 
 ## Architecture
 
-This is a Chrome/Edge browser extension that converts ChatGPT conversation pages to markdown format.
+This is a Chrome/Edge browser extension that converts ChatGPT conversation pages to markdown format. The codebase follows a modular architecture with separation of concerns.
 
 ### Core Components
 
 - **Main Entry Point**: `src/chatGptToMarkdown.js` - The main content script that extracts ChatGPT messages and converts them to markdown
 - **Element Parser**: `src/utils/parseElements.js` - Handles parsing of DOM elements from ChatGPT interface
-- **Node Parser**: `src/utils/parseNode.js` - Converts individual DOM nodes to markdown
+- **Node Parser**: `src/utils/parseNode.js` - Main orchestrator for converting DOM nodes to markdown
 - **File Saver**: `src/utils/consoleSave.js` - Handles downloading the generated markdown file
 - **Background Script**: `background.js` - Chrome extension background service worker
+
+### Modular Parser Architecture
+
+The parsing logic is organized into specialized modules under `src/parsers/`:
+
+- **Element Detector**: `src/parsers/elementDetector.js` - Functions to detect and classify DOM elements
+- **Header Parser**: `src/parsers/headerParser.js` - Handles message headers and markdown headers
+- **KaTeX Parser**: `src/parsers/katexParser.js` - Processes mathematical equations in KaTeX format
+- **List Parser**: `src/parsers/listParser.js` - Handles ordered and unordered lists
+- **Code Parser**: `src/parsers/codeParser.js` - Processes inline code and code blocks
+- **Table Parser**: `src/parsers/tableParser.js` - Converts HTML tables to markdown
+- **Block Quote Parser**: `src/parsers/blockQuoteParser.js` - Handles blockquote elements
+
+### Shared Constants and Utilities
+
+- **Constants**: `src/constants.js` - Central location for configuration values and element lists
+- **Utilities**: `src/utils/` - Shared utility functions for string processing, cleaning, and HTML replacement
 
 ### Extension Structure
 
